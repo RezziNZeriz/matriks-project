@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Calculator Pro</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/matrix-operations.css">
+    <link rel="stylesheet" href="styles/determinant.css">
+</head>
+<body>
+    <!-- Main Navigation -->
+    <nav class="main-nav">
+        <div class="nav-brand">
+            <h1>🧮 Matrix Calculator Pro</h1>
+        </div>
+        <div class="nav-menu">
+            <button class="nav-btn active" onclick="showSection('home')">
+                <span class="nav-icon">🏠</span>
+                Home
+            </button>
+            <button class="nav-btn" onclick="showSection('operations')">
+                <span class="nav-icon">➕</span>
+                Operasi Matriks
+            </button>
+            <button class="nav-btn" onclick="showSection('determinant')">
+                <span class="nav-icon">🎯</span>
+                Determinan 4x4
+            </button>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="section active">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">Matrix Calculator Pro</h1>
+                <p class="hero-subtitle">Aplikasi lengkap untuk operasi matriks dan perhitungan determinan</p>
+                
+                <div class="feature-cards">
+                    <div class="feature-card" onclick="showSection('operations')">
+                        <div class="feature-icon">➕</div>
+                        <h3>Operasi Matriks</h3>
+                        <p>Penjumlahan, pengurangan, perkalian, dan pembagian matriks dengan berbagai ukuran</p>
+                        <button class="feature-btn">Mulai →</button>
+                    </div>
+                    
+                    <div class="feature-card" onclick="showSection('determinant')">
+                        <div class="feature-icon">🎯</div>
+                        <h3>Determinan 4x4</h3>
+                        <p>Hitung determinan matriks 4x4 menggunakan metode Sarrus dengan visualisasi</p>
+                        <button class="feature-btn">Mulai →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Matrix Operations Section -->
+    <section id="operations" class="section">
+        <div class="operations-container">
+            <div class="section-header">
+                <h2>🔢 Operasi Matriks</h2>
+                <p>Pilih operasi dan ukuran matriks untuk memulai perhitungan</p>
+            </div>
+
+            <!-- Operation Selection -->
+            <div class="operation-selector">
+                <h3>Pilih Operasi:</h3>
+                <div class="operation-buttons">
+                    <button class="op-btn active" data-op="add">
+                        <span class="op-icon">➕</span>
+                        Penjumlahan
+                    </button>
+                    <button class="op-btn" data-op="subtract">
+                        <span class="op-icon">➖</span>
+                        Pengurangan
+                    </button>
+                    <button class="op-btn" data-op="multiply">
+                        <span class="op-icon">✖️</span>
+                        Perkalian
+                    </button>
+                    <button class="op-btn" data-op="divide">
+                        <span class="op-icon">➗</span>
+                        Pembagian
+                    </button>
+                </div>
+            </div>
+
+            <!-- Matrix Size Selection -->
+            <div class="size-selector">
+                <h3>Pilih Ukuran Matriks:</h3>
+                <div class="size-buttons">
+                    <button class="size-btn" onclick="setMatrixSize(2, 2)">2×2</button>
+                    <button class="size-btn" onclick="setMatrixSize(3, 3)">3×3</button>
+                    <button class="size-btn" onclick="setMatrixSize(4, 4)">4×4</button>
+                    <button class="size-btn" onclick="setMatrixSize(5, 5)">5×5</button>
+                </div>
+                <div class="custom-size">
+                    <input type="number" id="customRows" placeholder="Baris" min="1" max="10">
+                    <span>×</span>
+                    <input type="number" id="customCols" placeholder="Kolom" min="1" max="10">
+                    <button onclick="setCustomSize()">Set</button>
+                </div>
+            </div>
+
+            <!-- Matrix Input Area -->
+            <div id="matrixInputArea" class="matrix-input-area" style="display: none;">
+                <div class="matrix-inputs">
+                    <div class="matrix-group">
+                        <h4>Matriks A</h4>
+                        <div id="matrixA" class="matrix-grid"></div>
+                        <button onclick="randomFillMatrix('A')" class="util-btn">Random</button>
+                        <button onclick="clearMatrix('A')" class="util-btn">Clear</button>
+                    </div>
+                    
+                    <div class="operation-symbol">
+                        <span id="opSymbol">+</span>
+                    </div>
+                    
+                    <div class="matrix-group">
+                        <h4>Matriks B</h4>
+                        <div id="matrixB" class="matrix-grid"></div>
+                        <button onclick="randomFillMatrix('B')" class="util-btn">Random</button>
+                        <button onclick="clearMatrix('B')" class="util-btn">Clear</button>
+                    </div>
+                </div>
+                
+                <div class="calculate-section">
+                    <button id="calculateBtn" class="calculate-btn" onclick="calculateOperation()">
+                        Hitung Hasil
+                    </button>
+                </div>
+                
+                <div id="resultArea" class="result-area" style="display: none;">
+                    <h3>Hasil Perhitungan:</h3>
+                    <div class="result-display">
+                        <div id="resultMatrixA" class="result-matrix"></div>
+                        <span id="resultOpSymbol" class="result-op">+</span>
+                        <div id="resultMatrixB" class="result-matrix"></div>
+                        <span class="result-op">=</span>
+                        <div id="resultMatrixC" class="result-matrix"></div>
+                    </div>
+                    <div class="result-steps" id="calculationSteps"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Determinant Section -->
+    <section id="determinant" class="section">
+        <div class="determinant-container">
+            <div class="section-header">
+                <h2>🎯 Domain Expansion: Sarrus Mode</h2>
+                <p>Hitung determinan matriks 4×4 dengan visualisasi metode Sarrus</p>
+            </div>
+            
+            <div class="matrix-input-section">
+                <h3>Masukkan elemen matriks 4×4:</h3>
+                <div class="matrix-container">
+                    <div class="matrix-brackets left"></div>
+                    <div class="matrix-input" id="det-matrixInputs"></div>
+                    <div class="matrix-brackets right"></div>
+                </div>
+                
+                <div class="button-container">
+                    <button onclick="calculateDeterminant()" class="det-btn primary">Hitung Determinan</button>
+                    <button onclick="generateRandomDetMatrix()" class="det-btn secondary">Random Matrix</button>
+                    <button onclick="clearDetMatrix()" class="det-btn secondary">Clear Matrix</button>
+                </div>
+                
+                <div class="loading" id="detLoading">
+                    <div class="spinner"></div>
+                    <div>Menghitung determinan...</div>
+                </div>
+                
+                <div class="results-section">
+                    <div class="results-title">📊 Hasil Perhitungan</div>
+                    <pre id="detResult">Masukkan nilai matriks dan klik tombol untuk menghitung determinan.</pre>
+                </div>
+
+                <!-- <div class="visual-section" id="detVisualSection">
+                    <div class="visual-title">🎯 Visualisasi Metode Sarrus</div>
+                    <div class="visual-container">
+                        <div class="visual-item">
+                            <h4>A1 (Positif: Biru, Negatif: Merah)</h4>
+                            <div class="matrix-visual" id="visualA1"></div>
+                        </div>
+                        <div class="visual-item">
+                            <h4>A2 (Positif: Biru, Negatif: Merah)</h4>
+                            <div class="matrix-visual" id="visualA2"></div>
+                        </div>
+                        <div class="visual-item">
+                            <h4>A3 (Positif: Biru, Negatif: Merah)</h4>
+                            <div class="matrix-visual" id="visualA3"></div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/matrix-operations.js"></script>
+    <script src="js/determinant.js"></script>
+</body>
+</html>
